@@ -6,7 +6,7 @@ services:
       args:
         - PHP_VERSION=${PHP_VERSION}
     volumes:
-      - ${PHP_DATA_PATH}:/var/www/html
+      - ${APP_CODE_PATH_HOST}:/var/www/html
       - ${PHP_INI}:/usr/local/etc/php/php.ini
       - ${APACHE_HOST_LOG_PATH}:/var/log/apache2
       - ${APACHE_SITES_PATH}:/etc/apache2/sites-available
