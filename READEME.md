@@ -24,5 +24,5 @@ cp .env.example .env
 
 # 啟動
 ```
-docker-composer up -d 
+docker-compose up -d 
 ```
