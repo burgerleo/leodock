@@ -1,5 +1,6 @@
 ARG PHP_VERSION
-FROM php:${PHP_VERSION}-apache
+# FROM php:${PHP_VERSION}-apache
+FROM php:7.2-fpm
 
 RUN apt-get -y update --fix-missing
 RUN apt-get upgrade -y
@@ -8,10 +9,10 @@ RUN apt-get upgrade -y
 RUN apt-get -y install apt-utils nano wget dialog
 
 # Install important libraries
-RUN apt-get -y install --fix-missing apt-utils build-essential git curl libcurl3 libcurl3-dev zip openssl
+# RUN apt-get -y install --fix-missing apt-utils build-essential git curl libcurl3 libcurl3-dev zip openssl
 
 # Composer
-RUN curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin --filename=composer
+# RUN curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin --filename=composer
 
 # Install xdebug
 RUN pecl install xdebug-2.6.0
@@ -23,7 +24,18 @@ RUN docker-php-ext-enable redis
 
 # Other PHP7 Extensions
 
-RUN apt-get -y install libsqlite3-dev libsqlite3-0 mysql-client
+RUN apt-get update && apt-get install -y \
+    libfreetype6-dev \
+    libjpeg62-turbo-dev \
+    libmcrypt-dev \
+    libsqlite3-dev \
+    libsqlite3-0 \
+    libssl-dev \
+    libcurl3-dev \
+    libxml2-dev \
+    libzzip-dev \
+    mysql-client
+
 RUN docker-php-ext-install pdo_mysql
 RUN docker-php-ext-install pdo_sqlite
 RUN docker-php-ext-install mysqli
@@ -48,8 +60,11 @@ RUN docker-php-ext-install -j$(nproc) gd
 RUN apt-get install -y net-tools
 
 # Enable apache modules
-RUN a2enmod rewrite headers ssl
+# RUN a2enmod rewrite headers ssl
 
-COPY vhost.conf /etc/apache2/sites-enabled/vhost.conf
+# Set working directory
+WORKDIR /var/www/html
 
-EXPOSE 80
+# COPY vhost.conf /etc/apache2/sites-enabled/vhost.conf
+
+# EXPOSE 80

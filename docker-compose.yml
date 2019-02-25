@@ -6,16 +6,31 @@ services:
       args:
         - PHP_VERSION=${PHP_VERSION}
     volumes:
+      - ./php/www.conf:/usr/local/etc/php-fpm.d/www.conf
       - ${APP_CODE_PATH_HOST}:/var/www/html
-      - ${PHP_INI}:/usr/local/etc/php/php.ini
-      - ${APACHE_HOST_LOG_PATH}:/var/log/apache2
-      - ${APACHE_SITES_PATH}:/etc/apache2/sites-available
-      - ${APACHE_CONF}:/etc/apache2/apache2.conf
+      # - ${PHP_INI}:/usr/local/etc/php/php.ini
+      # - ${APACHE_HOST_LOG_PATH}:/var/log/apache2
+      # - ${APACHE_SITES_PATH}:/etc/apache2/sites-available
+      # - ${APACHE_CONF}:/etc/apache2/apache2.conf
     ports:
-      - "${APACHE_HOST_HTTP_PORT}:80"
-      - "${APACHE_HOST_HTTPS_PORT}:443"
+      - 9000:9000
     networks:
       - backend
+
+  nginx:
+    image: nginx:alpine
+    ports:
+      - 80:80
+      - 443:443
+    volumes: 
+      - ${APP_CODE_PATH_HOST}:/var/www/html
+      - ./nginx:/etc/nginx/conf.d
+      - ./log/nginx:/var/log/nginx
+    depends_on:
+      - php
+    networks:
+      - backend
+
   mysql:
     build:
       context: ./mysql
