@@ -8,29 +8,31 @@ services:
     volumes:
       - ./php/www.conf:/usr/local/etc/php-fpm.d/www.conf
       - ${APP_CODE_PATH_HOST}:/var/www/html
-      # - ${PHP_INI}:/usr/local/etc/php/php.ini
-      # - ${APACHE_HOST_LOG_PATH}:/var/log/apache2
-      # - ${APACHE_SITES_PATH}:/etc/apache2/sites-available
-      # - ${APACHE_CONF}:/etc/apache2/apache2.conf
     ports:
       - 9000:9000
     networks:
       - backend
 
+### nginx ################################################
   nginx:
-    image: nginx:alpine
+    build:
+        context: ./nginx
+        args:
+          - PHP_UPSTREAM_CONTAINER=php
+          - PHP_UPSTREAM_PORT=9000
     ports:
-      - 80:80
-      - 443:443
+      - ${NGINX_HOST_HTTP_PORT}:80
+      - ${NGINX_HOST_HTTPS_PORT}:443
     volumes: 
       - ${APP_CODE_PATH_HOST}:/var/www/html
-      - ./nginx:/etc/nginx/conf.d
-      - ./log/nginx:/var/log/nginx
+      - ./nginx/sites:/etc/nginx/sites-available
+      - ${DATA_LOG_PATH}/nginx:/var/log/nginx
     depends_on:
       - php
     networks:
       - backend
 
+### mysql ################################################
   mysql:
     build:
       context: ./mysql
@@ -43,10 +45,36 @@ services:
       - MYSQL_ROOT_PASSWORD=${MYSQL_ROOT_PASSWORD}
       - TZ=${WORKSPACE_TIMEZONE}
     volumes:
-      - ${MYSQL_DATA_PATH_HOST}:/var/lib/mysql
+      - ${DATA_PATH_HOST}/mysql:/var/lib/mysql
     ports:
       - "${MYSQL_PORT}:3306"
     networks:
       - backend
+
+### Redis ################################################
+  redis:
+    build: ./redis
+    volumes:
+      - ${DATA_PATH_HOST}/redis:/data
+    ports:
+      - "${REDIS_PORT}:6379"
+    networks:
+      - backend
+
+### MSSQL ################################################
+  # mssql:
+  #   build:
+  #     context: ./mssql
+  #   environment:
+  #     - MSSQL_DATABASE=${MSSQL_DATABASE}
+  #     - SA_PASSWORD=${MSSQL_PASSWORD}
+  #     - ACCEPT_EULA=Y
+  #   volumes:
+  #     - ${DATA_PATH_HOST}/mssql:/var/opt/mssql
+  #   ports:
+  #     - "${MSSQL_PORT}:1433"
+  #   networks:
+  #     - backend
+
 networks:
   backend:

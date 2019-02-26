@@ -9,7 +9,7 @@ RUN apt-get upgrade -y
 RUN apt-get -y install apt-utils nano wget dialog
 
 # Install important libraries
-# RUN apt-get -y install --fix-missing apt-utils build-essential git curl libcurl3 libcurl3-dev zip openssl
+RUN apt-get -y install --fix-missing apt-utils build-essential git curl libcurl3 libcurl3-dev zip openssl
 
 # Composer
 # RUN curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin --filename=composer
@@ -59,11 +59,17 @@ RUN docker-php-ext-install -j$(nproc) gd
 
 RUN apt-get install -y net-tools
 
-# Enable apache modules
-# RUN a2enmod rewrite headers ssl
 
 # Set working directory
 WORKDIR /var/www/html
+
+COPY ./php.ini /usr/local/etc/php/conf.d
+COPY ./xdebug.ini /usr/local/etc/php/conf.d/xdebug.ini
+
+RUN sed -i "s/xdebug.remote_autostart=0/xdebug.remote_autostart=1/" /usr/local/etc/php/conf.d/xdebug.ini && \
+    sed -i "s/xdebug.remote_enable=0/xdebug.remote_enable=1/" /usr/local/etc/php/conf.d/xdebug.ini && \
+    sed -i "s/xdebug.cli_color=0/xdebug.cli_color=1/" /usr/local/etc/php/conf.d/xdebug.ini
+
 
 # COPY vhost.conf /etc/apache2/sites-enabled/vhost.conf
 
