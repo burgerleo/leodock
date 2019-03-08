@@ -6,6 +6,7 @@ services:
       context: ./php
       args:
         - PHP_VERSION=${PHP_VERSION}
+    container_name: ${PHP_CONTAUBER_NAME}  
     volumes:
       - ${APP_CODE_PATH_HOST}:/var/www/html
       - ${PHP_INI}:/usr/local/etc/php/php.ini
@@ -24,6 +25,7 @@ services:
       context: ./mysql
       args:
         - MYSQL_VERSION=${MYSQL_VERSION}
+    container_name: ${MYSQL_CONTAUBER_NAME}  
     environment:
       - MYSQL_DATABASE=${MYSQL_DATABASE}
       - MYSQL_USER=${MYSQL_USER}
@@ -40,6 +42,7 @@ services:
 ### Redis ##################################################
   redis:
     build: ./redis
+    container_name: ${REDIST_CONTAUBER_NAME}  
     volumes:
       - ${DATA_PATH_HOST}/redis:/data
     ports:
@@ -51,8 +54,8 @@ services:
   mssql:
     build:
       context: ./mssql
+    container_name: ${MSSQL_CONTAUBER_NAME}  
     environment:
-      - MSSQL_DATABASE=${MSSQL_DATABASE}
       - SA_PASSWORD=${MSSQL_PASSWORD}
       - ACCEPT_EULA=Y
     volumes:
