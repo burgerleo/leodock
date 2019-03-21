@@ -4,6 +4,9 @@ FROM php:${PHP_VERSION}-apache
 RUN apt-get -y update --fix-missing
 RUN apt-get upgrade -y
 
+# Install cron & editor
+RUN apt-get install -y cron vim
+
 # Install useful tools
 RUN apt-get -y install apt-utils nano wget dialog
 
