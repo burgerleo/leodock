@@ -50,6 +50,10 @@ RUN docker-php-ext-install -j$(nproc) gd
 
 RUN apt-get install -y net-tools
 
+# 設置時區
+RUN /bin/cp /usr/share/zoneinfo/Asia/Taipei /etc/localtime \
+    && echo 'Asia/Shanghai' >/etc/timezone
+
 # Enable apache modules
 RUN a2enmod rewrite headers ssl
 
