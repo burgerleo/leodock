@@ -39,31 +39,6 @@ services:
     networks:
       - backend
 
-### Redis ##################################################
-  redis:
-    build: ./redis
-    container_name: ${REDIST_CONTAUBER_NAME}  
-    volumes:
-      - ${DATA_PATH_HOST}/redis:/data
-    ports:
-      - "${REDIS_PORT}:6379"
-    networks:
-      - backend
-
-### MSSQL ##################################################
-  mssql:
-    build:
-      context: ./mssql
-    container_name: ${MSSQL_CONTAUBER_NAME}  
-    environment:
-      - SA_PASSWORD=${MSSQL_PASSWORD}
-      - ACCEPT_EULA=Y
-    volumes:
-      - ${DATA_PATH_HOST}/mssql:/var/opt/mssql
-    ports:
-      - "${MSSQL_PORT}:1433"
-    networks:
-      - backend
-
+      
 networks:
   backend:
