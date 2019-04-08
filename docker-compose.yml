@@ -39,6 +39,16 @@ services:
     networks:
       - backend
 
+### Redis ##################################################
+  redis:
+    build: ./redis
+    container_name: ${REDIST_CONTAUBER_NAME}  
+    volumes:
+      - ${DATA_PATH_HOST}/redis:/data
+    ports:
+      - "${REDIS_PORT}:6379"
+    networks:
+      - backend
       
 networks:
   backend:
