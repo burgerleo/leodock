@@ -20,6 +20,8 @@ leodock
 
 ```
 cp .env.example .env
+
+cp apache2/ports.conf.example apache2/ports.conf
 ```
 
 # 啟動
