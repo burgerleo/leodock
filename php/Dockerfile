@@ -50,6 +50,11 @@ RUN docker-php-ext-install -j$(nproc) gd
 
 RUN apt-get install -y net-tools
 
+RUN apt-get install -y ntp
+
+# 網路校正時間指令
+# sudo ntpdate watch.stdtime.gov.tw
+
 # 設置時區
 RUN /bin/cp /usr/share/zoneinfo/Asia/Taipei /etc/localtime \
     && echo 'Asia/Taipei' >/etc/timezone
