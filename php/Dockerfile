@@ -24,8 +24,31 @@ RUN docker-php-ext-enable xdebug
 RUN pecl install redis-4.0.1
 RUN docker-php-ext-enable redis
 
-# Other PHP7 Extensions
+# Install sqllite
+RUN apt-get install -y apt-transport-https gnupg && \
+    curl https://packages.microsoft.com/keys/microsoft.asc | apt-key add - && \
+    curl https://packages.microsoft.com/config/debian/9/prod.list > /etc/apt/sources.list.d/mssql-release.list && \
+    apt-get update -yqq && \
+    # Install Dependencies
+    ACCEPT_EULA=Y apt-get install -y unixodbc unixodbc-dev libgss3 odbcinst msodbcsql17 locales && \
+    echo "en_US.UTF-8 UTF-8" > /etc/locale.gen && \
+    # link local aliases
+    ln -sfn /etc/locale.alias /usr/share/locale/locale.alias && \
+    locale-gen && \
+    # Install pdo_sqlsrv and sqlsrv from PECL. Replace pdo_sqlsrv-4.1.8preview with preferred version.
+    pecl install pdo_sqlsrv sqlsrv && \
+    docker-php-ext-enable pdo_sqlsrv sqlsrv && \
+    php -m | grep -q 'pdo_sqlsrv' && \
+    php -m | grep -q 'sqlsrv' 
 
+
+# Install bcmath and zip extensionfor acureport
+RUN docker-php-ext-install bcmath
+RUN apt-get install libzip-dev -y && \
+    docker-php-ext-configure zip --with-libzip && \
+    docker-php-ext-install zip
+
+# Other PHP7 Extensions
 RUN apt-get -y install libsqlite3-dev libsqlite3-0 mysql-client
 RUN docker-php-ext-install pdo_mysql
 RUN docker-php-ext-install pdo_sqlite
