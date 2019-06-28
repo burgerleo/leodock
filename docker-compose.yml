@@ -9,17 +9,19 @@ services:
     container_name: ${PHP_CONTAINER_NAME}  
     volumes:
       - ${APP_CODE_PATH_HOST}:/var/www/html
+      - /Users/hanhanhu/Desktop/deployer-ci-cd-test-desktop-eee/shared/storage:/var/www/html/releases/1/storage
+      - /Users/hanhanhu/Desktop/deployer-ci-cd-test-desktop-eee/shared/.env:/var/www/html/releases/1/.env
       - ${PHP_INI}:/usr/local/etc/php/php.ini
       - ${DATA_LOG_PATH}/apache2:/var/log/apache2
       - ${APACHE_SITES_PATH}:/etc/apache2/sites-available
       - ${APACHE_CONF}/apache2.conf:/etc/apache2/apache2.conf
       - ${APACHE_CONF}/ports.conf:/etc/apache2/ports.conf
-      - ./php/supervisor:/etc/supervisor/conf.d
-      - ./crontabs:/var/spool/cron/crontabs
+      # - ./php/supervisor:/etc/supervisor/conf.d
+      # - ./crontabs:/var/spool/cron/crontabs
     ports:
       - "${APACHE_HOST_HTTP_PORT}:80"
       - "${APACHE_HOST_HTTPS_PORT}:443"
-      - "${SUPERVISORD_PORT}:9001"
+      # - "${SUPERVISORD_PORT}:9001"
     networks:
       - backend
 
@@ -44,30 +46,30 @@ services:
       - backend
 
 ### Redis ##################################################
-  redis:
-    build: ./redis
-    container_name: ${REDIST_CONTAINER_NAME}  
-    volumes:
-      - ${DATA_PATH_HOST}/redis:/data
-    ports:
-      - "${REDIS_PORT}:6379"
-    networks:
-      - backend
+  # redis:
+  #   build: ./redis
+  #   container_name: ${REDIST_CONTAINER_NAME}  
+  #   volumes:
+  #     - ${DATA_PATH_HOST}/redis:/data
+  #   ports:
+  #     - "${REDIS_PORT}:6379"
+  #   networks:
+  #     - backend
 
 ### MSSQL ##################################################
-  mssql:
-    build:
-      context: ./mssql
-    container_name: ${MSSQL_CONTAINER_NAME}  
-    environment:
-      - SA_PASSWORD=${MSSQL_PASSWORD}
-      - ACCEPT_EULA=Y
-    volumes:
-      - ${DATA_PATH_HOST}/mssql:/var/opt/mssql
-    ports:
-      - "${MSSQL_PORT}:1433"
-    networks:
-      - backend
+  # mssql:
+  #   build:
+  #     context: ./mssql
+  #   container_name: ${MSSQL_CONTAINER_NAME}  
+  #   environment:
+  #     - SA_PASSWORD=${MSSQL_PASSWORD}
+  #     - ACCEPT_EULA=Y
+  #   volumes:
+  #     - ${DATA_PATH_HOST}/mssql:/var/opt/mssql
+  #   ports:
+  #     - "${MSSQL_PORT}:1433"
+  #   networks:
+  #     - backend
 
 networks:
   backend:
