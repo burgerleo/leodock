@@ -9,8 +9,9 @@ services:
     container_name: ${PHP_CONTAINER_NAME}  
     volumes:
       - ${APP_CODE_PATH_HOST}:/var/www/html
-      - /Users/hanhanhu/Desktop/deployer-ci-cd-test-desktop-eee/shared/storage:/var/www/html/releases/1/storage
-      - /Users/hanhanhu/Desktop/deployer-ci-cd-test-desktop-eee/shared/.env:/var/www/html/releases/1/.env
+      - ${APP_CODE_PATH_HOST}/current:/var/www/html/current
+      - ${APP_CODE_PATH_HOST}/shared/storage:/var/www/html/current/storage
+      - ${APP_CODE_PATH_HOST}/shared/.env:/var/www/html/current/.env
       - ${PHP_INI}:/usr/local/etc/php/php.ini
       - ${DATA_LOG_PATH}/apache2:/var/log/apache2
       - ${APACHE_SITES_PATH}:/etc/apache2/sites-available
