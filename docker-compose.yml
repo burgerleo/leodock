@@ -70,5 +70,9 @@ services:
       - backend
 
 networks:
-  backend:
-    driver: bridge
+  backend: 
+    driver: bridge 
+    ipam: 
+      config: 
+        - subnet: ${SEGMENT}
+          gateway: ${GATWAY}
