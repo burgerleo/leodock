@@ -6,6 +6,7 @@ services:
       context: ./php
       args:
         - PHP_VERSION=${PHP_VERSION}
+    restart: always
     container_name: ${PHP_CONTAINER_NAME}  
     volumes:
       - ${APP_CODE_PATH_HOST}:/var/www/html
@@ -29,6 +30,7 @@ services:
       context: ./mysql
       args:
         - MYSQL_VERSION=${MYSQL_VERSION}
+    restart: always
     container_name: ${MYSQL_CONTAINER_NAME}  
     environment:
       - MYSQL_DATABASE=${MYSQL_DATABASE}
@@ -46,6 +48,7 @@ services:
 ### Redis ##################################################
   redis:
     build: ./redis
+    restart: always
     container_name: ${REDIST_CONTAINER_NAME}  
     volumes:
       - ${DATA_PATH_HOST}/redis:/data
@@ -58,6 +61,7 @@ services:
   mssql:
     build:
       context: ./mssql
+    restart: always
     container_name: ${MSSQL_CONTAINER_NAME}  
     environment:
       - SA_PASSWORD=${MSSQL_PASSWORD}
