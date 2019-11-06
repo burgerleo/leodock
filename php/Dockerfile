@@ -11,7 +11,9 @@ RUN apt-get install -y cron vim
 RUN apt-get -y install apt-utils nano wget dialog
 
 # Install important libraries
-RUN apt-get -y install --fix-missing apt-utils build-essential git curl libcurl3 libcurl3-dev zip openssl
+RUN apt-get -y install --fix-missing apt-utils build-essential git curl zip openssl
+
+RUN apt-get install libssl-dev libcurl4-openssl-dev pkg-config
 
 # Composer
 RUN curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin --filename=composer
