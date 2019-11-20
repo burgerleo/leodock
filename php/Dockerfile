@@ -13,7 +13,7 @@ RUN apt-get -y install apt-utils nano wget dialog
 # Install important libraries
 RUN apt-get -y install --fix-missing apt-utils build-essential git curl zip openssl
 
-RUN apt-get install libssl-dev libcurl4-openssl-dev pkg-config
+RUN apt-get -y install libssl-dev libcurl4-openssl-dev pkg-config
 
 # Composer
 RUN curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin --filename=composer
@@ -28,7 +28,7 @@ RUN docker-php-ext-enable redis
 
 # Other PHP7 Extensions
 
-RUN apt-get -y install libsqlite3-dev libsqlite3-0 mysql-client
+RUN apt-get -y install libsqlite3-dev libsqlite3-0 mariadb-client
 RUN docker-php-ext-install pdo_mysql
 RUN docker-php-ext-install pdo_sqlite
 RUN docker-php-ext-install mysqli
