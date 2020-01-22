@@ -54,6 +54,8 @@ RUN apt-get install -y net-tools
 
 RUN apt-get install -y ntp
 
+RUN apt-get install -y ipcalc
+
 RUN apt-get install -y supervisor
 
 #
