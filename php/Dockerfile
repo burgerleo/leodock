@@ -81,6 +81,8 @@ RUN /bin/cp /usr/share/zoneinfo/Asia/Taipei /etc/localtime \
 # Enable apache modules
 RUN a2enmod rewrite headers ssl
 
+RUN service cron start
+
 COPY vhost.conf /etc/apache2/sites-enabled/vhost.conf
 
 EXPOSE 80
