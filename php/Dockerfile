@@ -56,7 +56,9 @@ RUN apt-get install -y ntp
 
 RUN apt-get install -y ipcalc
 
-RUN apt-get install -y supervisor
+RUN apt-get -y update --fix-missing
+
+RUN apt-get -y install supervisor
 
 #
 #--------------------------------------------------------------------------
